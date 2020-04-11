@@ -1,0 +1,56 @@
+#!/bin/sh
+IMAGE_SOURCECODE_GIT_REPO_URL="localhost"
+IMAGE_SOURCECODE_GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+IMAGE_SOURCECODE_GIT_COMMIT_HASH=$(git log -1 --pretty=%h)
+
+IMAGE_CLASS=app
+IMAGE_APP_BRAND=aws_client
+IMAGE_APP_VERSION=2.0
+IMAGE_OS_BRAND=ubi
+IMAGE_OS_VERSION=8.1
+IMAGE_REPO_HOSTNAME=localhost
+IMAGE_REPO_OWNERNAME=localbuilder
+IMAGE_REPO_NAME=${IMAGE_CLASS}-${IMAGE_APP_BRAND}-${IMAGE_OS_BRAND}
+
+# BUILD_ID should not be the hash fo the latest git commit of the image source code
+# because the source code may not have changed.  Image builds may be triggered for
+# the following reasons:
+#
+# - Image source code changes
+# - Image base image changes
+# - OS software changes
+# - Application execution environment software changes
+# - Application software source code changes
+# - Application software binary code changes
+IMAGE_BUILD_COUNTER_FILE=image-build-count
+if [ ! -f ${IMAGE_BUILD_COUNTER_FILE} ]; then
+    echo 0 > ${IMAGE_BUILD_COUNTER_FILE};
+    IMAGE_BUILD_COUNTER=0;
+else
+    IMAGE_BUILD_COUNTER=$(cat $IMAGE_BUILD_COUNTER_FILE)
+    ((IMAGE_BUILD_COUNTER++))
+    echo ${IMAGE_BUILD_COUNTER} > ${IMAGE_BUILD_COUNTER_FILE}
+fi
+
+IMAGE_BUILD_ID=${IMAGE_BUILD_COUNTER}
+IMAGE_TAG_BASE=${IMAGE_APP_VERSION}-${IMAGE_OS_VERSION}
+IMAGE_TAG=${IMAGE_TAG_BASE}-${IMAGE_BUILD_ID}
+IMAGE_TAG_LATEST=${IMAGE_TAG_BASE}-latest
+
+IMAGE=${IMAGE_REPO_HOSTNAME}/${IMAGE_REPO_OWNERNAME}/${IMAGE_REPO_NAME}
+
+echo "IMAGE_SOURCECODE_GIT_BRANCH=${IMAGE_SOURCECODE_GIT_BRANCH}" > image-info
+echo "IMAGE_SOURCECODE_GIT_COMMIT_HASH=${IMAGE_SOURCECODE_GIT_COMMIT_HASH}" >> image-info
+echo "IMAGE_REPO_HOSTNAME=$IMAGE_REPO_HOSTNAME" >> image-info
+echo "IMAGE_REPO_OWNERNAME=$IMAGE_REPO_OWNERNAME" >> image-info
+echo "IMAGE_REPO_NAME=$IMAGE_REPO_NAME" >> image-info
+echo "IMAGE_APP_BRAND=$IMAGE_OS_BRAND" >> image-info
+echo "IMAGE_APP_VERSION=$IMAGE_OS_VERSION" >> image-info
+echo "IMAGE_OS_BRAND=$IMAGE_OS_BRAND" >> image-info
+echo "IMAGE_OS_VERSION=$IMAGE_OS_VERSION" >> image-info
+echo "IMAGE_BUILD_ID=$IMAGE_BUILD_ID" >> image-info
+echo "IMAGE_TAG=$IMAGE_TAG" >> image-info
+
+docker build -f ./Dockerfile --tag ${IMAGE}:${IMAGE_TAG} .
+docker tag ${IMAGE}:${IMAGE_TAG} ${IMAGE}:${IMAGE_TAG_LATEST}
+#rm image-info
