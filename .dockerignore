@@ -1,0 +1,6 @@
+# Files that will not be loaded to the Docker daemon
+.dockerignore
+.gitignore
+.git
+*.class
+build/
