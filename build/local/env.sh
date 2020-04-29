@@ -10,7 +10,7 @@ export IMAGE_SOURCECODE_GIT_COMMIT_TAG=$(git show-ref --tags -d | grep ^${IMAGE_
 export IMAGE_SOURCECODE_GIT_COMMITTER_NAME=$(git log -1 --pretty=%cn)
 export IMAGE_SOURCECODE_GIT_COMMITTER_DATE=$(git log -1 --pretty=%ci)
 
-export IMAGE_CLASS=app
+export IMAGE_CLASS=aci
 export IMAGE_OS_BRAND=ubi
 export IMAGE_OS_VERSION=8.1
 

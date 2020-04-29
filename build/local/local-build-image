@@ -24,7 +24,7 @@ fi
 export IMAGE_BUILD_ID=${IMAGE_BUILD_COUNTER}
 
 case ${IMAGE_CLASS} in
-    app)
+    aci)
         if [ "${APP_PLATFORM_BRAND}" != "" ]
         then
             export IMAGE_REPO_NAME=${IMAGE_CLASS}-${APP_BRAND}-${APPPLT_BRAND}-${IMAGE_OS_BRAND};
@@ -36,17 +36,17 @@ case ${IMAGE_CLASS} in
             export IMAGE_TAG_LATEST=${APP_VERSION}-${IMAGE_OS_VERSION}-latest;
         fi        
     ;;
-    dtp)
+    dci)
         export IMAGE_REPO_NAME=${IMAGE_CLASS}-${APPPLT_BRAND}-${IMAGE_OS_BRAND};
         export IMAGE_TAG=${APPPLT_VERSION}-${IMAGE_OS_VERSION}-${IMAGE_BUILD_ID};
         export IMAGE_TAG_LATEST=${APPPLT_VERSION}-${IMAGE_OS_VERSION}-latest;
     ;;
-    rtp)
+    rci)
         export IMAGE_REPO_NAME=${IMAGE_CLASS}-${APPPLT_BRAND}-${IMAGE_OS_BRAND};
         export IMAGE_TAG=${APPPLT_VERSION}-${IMAGE_OS_VERSION}-${IMAGE_BUILD_ID};
         export IMAGE_TAG_LATEST=${APPPLT_VERSION}-${IMAGE_OS_VERSION}-latest;
     ;;
-    os)
+    osci)
         export IMAGE_REPO_NAME=${IMAGE_CLASS}-${IMAGE_OS_BRAND};
         export IMAGE_TAG=${IMAGE_OS_VERSION}-${IMAGE_BUILD_ID};
         export IMAGE_TAG_LATEST=${IMAGE_OS_VERSION}-latest;

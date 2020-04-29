@@ -1,4 +1,4 @@
-FROM docker.io/zmaker123/os-ubi:8.1-latest
+FROM docker.io/zmaker123/osci-ubi:8.1-latest
 
 USER root
 ARG USERNAME=awsuser
