@@ -41,6 +41,14 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s 
     && mv ./kubectl /usr/local/bin \
     && kubectl version --client
 
+RUN curl "http://nginx-contentserver.mynet/software-install-files/linux-os/terraform_0.12.24_linux_amd64.zip" -o "terraform.zip" \
+    && unzip ./terraform.zip \
+    && chmod +x terraform \
+    && mv ./terraform /usr/local/bin \
+    && rm terraform.zip \
+    && terraform version
+# Provide a volume mount point to store configuration
+
 # Get values from docker build CLI args
 ARG IMAGE_SOURCECODE_GIT_REPO_URL=
 ARG IMAGE_SOURCECODE_GIT_BRANCH=
