@@ -1,0 +1,67 @@
+= AWS Client Tools On UBI
+
+This is a container image that supplies a set of software tools that enables application developers and AWS system operators to interact with AWS without having to install the tools on their local workstation computers.
+
+== Components included:
+
+* [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
+* [AWS eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
+* [Kubernetes kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux)
+* Terraform
+* Kubernetes Operations (kops)
+* Python38
+* git
+* jq
+* yq
+* curl
+* wget
+* tar
+* unzip
+
+# Process
+
+* Change to a directory where you want to store your programs
+* Start the container mounting the current directory to /home/me container directory
++
+----
+docker run -it --rm -v ${PWD}:/home/me <image-repo>:<image-tag>
+----
++
+By starting the container in this manner, all programs and data you create within the container will be stored in the current directory from where you created the container.
+* Test the following programs:
++
+----
+aws version
+eksctl version
+kubectl version
+terraform version
+kops version
+----
+
+* Configure the AWS client
++
+----
+aws configure
+----
+
+* Enter your AWS IAM credentials
+* Enter your default region name (e.g., us-east-2)
+* Enter default output format (e.g., json)
+
+The following actions require that the AWS IAM user that you are using has suitable IAM authorizations to perform the actions.
+
+* Check to see if you are able to connect to AWS
++
+----
+aws iam get-user
+aws sts get-caller-identity
+----
+
+
+
+# TODOs
+- Build container image testing mechanisms
+- Add Hashicorp Terraform
+
+# Information Resources
+- [AWS CLI](https://aws.amazon.com/cli/)

@@ -5,7 +5,7 @@ if [ "$1" = 'default' ]
 then
     # Execute default actions
     echo "Running container with defaults"
-    awscli
+    bash
 else
     # Execute user supplied args
     # Could be any of the following programs:
