@@ -41,7 +41,8 @@ RUN echo "[centos-8.1.1911-appstream]" > /etc/yum.repos.d/centos.repo \
     && echo "gpgcheck=0" >> /etc/yum.repos.d/centos.repo \
     && microdnf install jq-1.5 \
     && microdnf clean all \
-    && pip3 install yq
+    && pip3 install yq \
+    && pip3 install json2yaml
 
 # Install AWS CLI
 RUN curl --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
