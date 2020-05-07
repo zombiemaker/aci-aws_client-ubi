@@ -55,6 +55,12 @@ RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/late
     && mv /tmp/eksctl /usr/local/bin \
     && eksctl version 
 
+# Install AWS IAM Authenticator
+RUN curl --silent --location "https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/aws-iam-authenticator" -o aws-iam-authenticator \
+    && chmod +x ./aws-iam-authenticator \
+    && mv ./aws-iam-authenticator /usr/local/bin \
+    && aws-iam-authenticator version 
+
 # Install kubectl
 RUN curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl \
     && chmod +x ./kubectl \
@@ -68,6 +74,14 @@ RUN curl --silent "https://releases.hashicorp.com/terraform/0.12.24/terraform_0.
     && mv ./terraform /usr/local/bin \
     && rm terraform.zip \
     && terraform version
+
+# Install HashiCorp Packer
+RUN curl --silent "https://releases.hashicorp.com/packer/1.5.6/packer_1.5.6_linux_amd64.zip" -o "packer.zip" \
+    && unzip ./packer.zip \
+    && chmod +x packer \
+    && mv ./packer /usr/local/bin \
+    && rm packer.zip \
+    && packer version
 
 # Install Kubernetes Operations
 #RUN curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64 \
