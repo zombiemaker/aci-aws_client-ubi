@@ -133,6 +133,7 @@ LABEL \
     app.sourcecode.git.committer.date="$APP_SOURCECODE_GIT_COMMITTER_DATE" 
 
 COPY README.* entrypoint.sh image-info "/"
+RUN chmod 755 /entrypoint.sh
 #RUN mkdir -p /data && chmod 755 /data && chown ${USERNAME} /data
 
 VOLUME ["/home/${USERNAME}"]
