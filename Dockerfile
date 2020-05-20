@@ -68,7 +68,7 @@ RUN curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/
     && kubectl version --client
 
 # Install Terraform
-RUN curl --silent "https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip" -o "terraform.zip" \
+RUN curl --silent "https://releases.hashicorp.com/terraform/0.12.25/terraform_0.12.25_linux_amd64.zip" -o "terraform.zip" \
     && unzip ./terraform.zip \
     && chmod +x terraform \
     && mv ./terraform /usr/local/bin \
