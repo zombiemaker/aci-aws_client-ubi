@@ -89,7 +89,11 @@ RUN curl --silent -LO https://github.com/kubernetes/kops/releases/download/v1.16
     && chmod +x kops-linux-amd64 \
     && mv ./kops-linux-amd64 /usr/local/bin/kops
 
-# Provide a volume mount point to store configuration
+RUN wget -q -O helm.tar.gz https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz \
+    && tar xvf helm.tar.gz \
+    && rm ./helm.tar.gz \
+    && mv linux-amd64/helm /usr/local/bin \
+    && rm -R -f ./linux-amd64
 
 # Get values from docker build CLI args
 ARG IMAGE_SOURCECODE_GIT_REPO_URL=
@@ -132,12 +136,15 @@ LABEL \
     app.sourcecode.git.committer.name="$APP_SOURCECODE_GIT_COMMITTER_NAME" \
     app.sourcecode.git.committer.date="$APP_SOURCECODE_GIT_COMMITTER_DATE" 
 
-COPY README.* entrypoint.sh image-info "/"
+COPY README.* entrypoint.sh image-info .bashrc "/"
 RUN chmod 755 /entrypoint.sh
 #RUN mkdir -p /data && chmod 755 /data && chown ${USERNAME} /data
 
 VOLUME ["/home/${USERNAME}"]
 WORKDIR "/home/${USERNAME}"
+
+# Exposing TCP port for kubectl proxy usecases
+EXPOSE 9000/tcp
 
 # Drop to non-root user
 USER ${USERNAME}
