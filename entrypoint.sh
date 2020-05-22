@@ -2,9 +2,11 @@
 
 # Enable bash completion for eksctl commands
 # Enable bash completion for kubectl
+# Enable bash completion for aws cli
 cd ~
 cp /.bashrc ~/.bashrc
 echo -e "\n. /etc/profile.d/bash_completion.sh" >> ~/.bashrc
+echo "complete -C '/usr/local/aws-cli/v2/current/bin/aws_completer' aws" >> ~/.bashrc
 
 
 # if default
