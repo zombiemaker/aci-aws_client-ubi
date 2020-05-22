@@ -1,6 +1,11 @@
 #!/bin/bash
 
-source /.bashrc
+# Enable bash completion for eksctl commands
+# Enable bash completion for kubectl
+cd ~
+cp /.bashrc ~/.bashrc
+echo -e "\n. /etc/profile.d/bash_completion.sh" >> ~/.bashrc
+
 
 # if default
 if [ "$1" = 'default' ]

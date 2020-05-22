@@ -25,6 +25,7 @@ RUN groupadd \
         tar \
         curl \
         wget \
+        gettext \
         python38 \
         python38-wheel \
         python38-pip \
@@ -34,12 +35,33 @@ RUN groupadd \
 RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-RUN echo "[centos-8.1.1911-appstream]" > /etc/yum.repos.d/centos.repo \
-    && echo "name=CentOS-8 - appStream" >> /etc/yum.repos.d/centos.repo \
-    && echo "baseurl=http://mirror.centos.org/centos/8.1.1911/AppStream/x86_64/os/" >> /etc/yum.repos.d/centos.repo \
+RUN echo "[centos-8-stream-appstream]" > /etc/yum.repos.d/centos.repo \
+    && echo "name=CentOS-8 Stream - appStream" >> /etc/yum.repos.d/centos.repo \
+    && echo "baseurl=http://www.gtlib.gatech.edu/pub/centos/8-stream/AppStream/x86_64/os" >> /etc/yum.repos.d/centos.repo \
+    && echo "enabled=1" >> /etc/yum.repos.d/centos.repo \
+    && echo "gpgcheck=0" >> /etc/yum.repos.d/centos.repo \
+    && echo "[centos-8-stream-BaseOS]" >> /etc/yum.repos.d/centos.repo \
+    && echo "name=CentOS-8 Stream - BaseOS" >> /etc/yum.repos.d/centos.repo \
+    && echo "baseurl=http://www.gtlib.gatech.edu/pub/centos/8-stream/BaseOS/x86_64/os" >> /etc/yum.repos.d/centos.repo \
+    && echo "enabled=1" >> /etc/yum.repos.d/centos.repo \
+    && echo "gpgcheck=0" >> /etc/yum.repos.d/centos.repo \
+    && echo "[centos-8-stream-PowerTools]" >> /etc/yum.repos.d/centos.repo \
+    && echo "name=CentOS-8 Stream - PowerTools" >> /etc/yum.repos.d/centos.repo \
+    && echo "baseurl=http://www.gtlib.gatech.edu/pub/centos/8-stream/PowerTools/x86_64/os/" >> /etc/yum.repos.d/centos.repo \
+    && echo "enabled=1" >> /etc/yum.repos.d/centos.repo \
+    && echo "gpgcheck=0" >> /etc/yum.repos.d/centos.repo \
+    && echo "[centos-8-stream-extras]" >> /etc/yum.repos.d/centos.repo \
+    && echo "name=CentOS-8 Stream - extras" >> /etc/yum.repos.d/centos.repo \
+    && echo "baseurl=http://www.gtlib.gatech.edu/pub/centos/8-stream/extras/x86_64/os/" >> /etc/yum.repos.d/centos.repo \
+    && echo "enabled=1" >> /etc/yum.repos.d/centos.repo \
+    && echo "gpgcheck=0" >> /etc/yum.repos.d/centos.repo \
+    && echo "[centos-8-stream-HighAvailability]" >> /etc/yum.repos.d/centos.repo \
+    && echo "name=CentOS-8 Stream - HighAvailability" >> /etc/yum.repos.d/centos.repo \
+    && echo "baseurl=http://www.gtlib.gatech.edu/pub/centos/8-stream/HighAvailability/x86_64/os/" >> /etc/yum.repos.d/centos.repo \
     && echo "enabled=1" >> /etc/yum.repos.d/centos.repo \
     && echo "gpgcheck=0" >> /etc/yum.repos.d/centos.repo \
     && microdnf install jq-1.5 \
+        bash-completion \
     && microdnf clean all \
     && pip3 install yq \
     && pip3 install json2yaml
@@ -51,8 +73,10 @@ RUN curl --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o 
     && rm -R ./awscliv2.zip ./aws
 
 # Install AWS eksctl
+# Have to use entrypoint.sh to copy /.bash_completion to ~/.bash_completion
 RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp \
     && mv /tmp/eksctl /usr/local/bin \
+    && eksctl completion bash > /etc/bash_completion.d/eksctl \
     && eksctl version 
 
 # Install AWS IAM Authenticator
@@ -65,6 +89,7 @@ RUN curl --silent --location "https://amazon-eks.s3.us-west-2.amazonaws.com/1.16
 RUN curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl \
     && chmod +x ./kubectl \
     && mv ./kubectl /usr/local/bin \
+    && kubectl completion bash > /etc/bash_completion.d/kubectl \
     && kubectl version --client
 
 # Install Terraform
@@ -143,8 +168,8 @@ RUN chmod 755 /entrypoint.sh
 VOLUME ["/home/${USERNAME}"]
 WORKDIR "/home/${USERNAME}"
 
-# Exposing TCP port for kubectl proxy usecases
-EXPOSE 9000/tcp
+# Exposing TCP port for kubectl proxy usecases (default is 8001)
+EXPOSE 8001/tcp
 
 # Drop to non-root user
 USER ${USERNAME}
