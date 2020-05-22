@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Need to enable bash completion even when ~/.bashrc is not available because the ~/ directory is mounted
 # Enable bash completion for eksctl commands
 # Enable bash completion for kubectl
 # Enable bash completion for aws cli
@@ -7,7 +8,15 @@ cd ~
 cp /.bashrc ~/.bashrc
 echo -e "\n. /etc/profile.d/bash_completion.sh" >> ~/.bashrc
 echo "complete -C '/usr/local/aws-cli/v2/current/bin/aws_completer' aws" >> ~/.bashrc
+source ~/.bashrc
 
+# To make this work in Visual Studio Code remote development container, be sure to configure the devcontainer.json file with the following
+# // Use this to delete the .postCreateCommandMarker file
+# "initializeCommand": "rm containerfs/.vscode-server/data/Machine/.postCreateCommandMarker",
+# // THIS IS NOT EXECUTED IF ~/.vscode-server/data/Machine/.postCreateCommandMarker file exists
+# // Use 'postCreateCommand' to run commands after the container is created.
+# // This is needed to setup bash shell
+# "postCreateCommand": ["/entrypoint.sh", "ls"],
 
 # if default
 if [ "$1" = 'default' ]

@@ -114,6 +114,7 @@ RUN curl --silent -LO https://github.com/kubernetes/kops/releases/download/v1.16
     && chmod +x kops-linux-amd64 \
     && mv ./kops-linux-amd64 /usr/local/bin/kops
 
+# Install Helm CLI
 RUN wget -q -O helm.tar.gz https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz \
     && tar xvf helm.tar.gz \
     && rm ./helm.tar.gz \

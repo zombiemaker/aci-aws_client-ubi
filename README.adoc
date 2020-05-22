@@ -59,10 +59,19 @@ aws sts get-caller-identity
 ----
 
 
+== Scenarios
 
-# TODOs
-- Build container image testing mechanisms
-- Add Hashicorp Terraform
+One usage scenario is when a user simply runs the container using docker run or docker-compose.
 
-# Information Resources
-- [AWS CLI](https://aws.amazon.com/cli/)
+Another usage scenario is when a user uses the image to create a remote development container within Visual Studio Code.  In this situation, the startup process is different.  It can 
+
+
+== TODOs
+
+* Add bash completion for Helm
+* Build container image testing mechanisms
+* DONE: Add Hashicorp Terraform
+
+== Information Resources
+
+* [AWS CLI](https://aws.amazon.com/cli/)
