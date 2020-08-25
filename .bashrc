@@ -52,3 +52,17 @@ export PS1="\[\e[36m\]AWS\[\e[m\] \[\e[35m\]\d\[\e[m\] \[\e[35m\]\t\[\e[m\] [\[\
 ############### CUSTOM PROMPT END
 
 export PATH=./:~/bin:~/scripts:$PATH
+
+alias tf="terraform"
+alias k="kubectl"
+
+# This .bashrc file will be COPIED to ~/.bashrc EVERY TIME a container is created from this image
+# Use the ~/.mybash file to add alias and functions
+if [ ! -f ~/.mybashrc ]
+then
+	echo "Creating ~/.mybashrc file."
+	touch ~/.mybashrc
+	echo "#!/bin/bash" >> ~/.mybashrc
+	echo "# Put your bash customizations in this file not in the ~/.bashrc file" >> ~/.mybashrc
+fi
+source ~/.mybashrc

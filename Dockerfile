@@ -5,36 +5,9 @@ ARG USERNAME=me
 ARG USER_UID=1000
 ARG USER_GID=${USER_UID}
 
-# Keep every item on a separate lines to make version control code change review easier
-RUN groupadd \
-        --gid $USER_GID \
-        $USERNAME \
-    && useradd \
-        -s /bin/bash \
-        --uid $USER_UID \
-        --gid $USER_GID \
-        --system \
-        --home /home/$USERNAME \
-        -m \
-        $USERNAME \
-    && microdnf install \
-        sudo \
-        vi \
-        git \
-        unzip \
-        tar \
-        curl \
-        wget \
-        gettext \
-        python38 \
-        python38-wheel \
-        python38-pip \
-        python38-pip-wheel \
-    && microdnf clean all
+# Keep every item on a separate line to make version control code change review easier
 
-RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-
+# Add CentOS repos to get additional packages
 RUN echo "[centos-8-stream-appstream]" > /etc/yum.repos.d/centos.repo \
     && echo "name=CentOS-8 Stream - appStream" >> /etc/yum.repos.d/centos.repo \
     && echo "baseurl=http://www.gtlib.gatech.edu/pub/centos/8-stream/AppStream/x86_64/os" >> /etc/yum.repos.d/centos.repo \
@@ -60,7 +33,50 @@ RUN echo "[centos-8-stream-appstream]" > /etc/yum.repos.d/centos.repo \
     && echo "baseurl=http://www.gtlib.gatech.edu/pub/centos/8-stream/HighAvailability/x86_64/os/" >> /etc/yum.repos.d/centos.repo \
     && echo "enabled=1" >> /etc/yum.repos.d/centos.repo \
     && echo "gpgcheck=0" >> /etc/yum.repos.d/centos.repo \
-    && microdnf install jq-1.5 \
+    && microdnf install \
+        sudo \
+        vi \
+        which \
+    && microdnf clean all
+
+RUN groupadd \
+        --gid $USER_GID \
+        $USERNAME \
+    && useradd \
+        -s /bin/bash \
+        --uid $USER_UID \
+        --gid $USER_GID \
+        --system \
+        --home /home/$USERNAME \
+        -m \
+        $USERNAME \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# curl, wget, and git for retrieving content
+# unzip and tar for extraction
+# gettext for ?
+# procps-ng for commands like process commands: watch, ps, top, slabtop, kill
+# tree for showing directory structure
+# python for running Python programs like jq, yq, jason2yaml
+# jq for parsing JSON data
+# yq for parsing YAML data
+# json2yam for transforming JSON to YAML
+# bash-completion to support CLI programs that use bash completion like kubectl, gcloud, aws, az, helm
+RUN microdnf install \
+        curl \
+        wget \
+        git \
+        unzip \
+        tar \
+        gettext \
+        procps-ng \
+        tree \
+        python38 \
+        python38-wheel \
+        python38-pip \
+        python38-pip-wheel \
+        jq-1.5 \
         bash-completion \
     && microdnf clean all \
     && pip3 install yq \
@@ -119,7 +135,8 @@ RUN wget -q -O helm.tar.gz https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz \
     && tar xvf helm.tar.gz \
     && rm ./helm.tar.gz \
     && mv linux-amd64/helm /usr/local/bin \
-    && rm -R -f ./linux-amd64
+    && rm -R -f ./linux-amd64 \
+    && helm completion bash > /etc/bash_completion.d/helm
 
 # Get values from docker build CLI args
 ARG IMAGE_SOURCECODE_GIT_REPO_URL=
