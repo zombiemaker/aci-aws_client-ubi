@@ -96,7 +96,7 @@ RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/late
     && eksctl version 
 
 # Install AWS IAM Authenticator
-RUN curl --silent --location "https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/aws-iam-authenticator" -o aws-iam-authenticator \
+RUN curl --silent --location "https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/aws-iam-authenticator" -o aws-iam-authenticator \
     && chmod +x ./aws-iam-authenticator \
     && mv ./aws-iam-authenticator /usr/local/bin \
     && aws-iam-authenticator version 
@@ -109,7 +109,7 @@ RUN curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/
     && kubectl version --client
 
 # Install Terraform
-RUN curl --silent "https://releases.hashicorp.com/terraform/0.12.25/terraform_0.12.25_linux_amd64.zip" -o "terraform.zip" \
+RUN curl --silent "https://releases.hashicorp.com/terraform/0.13.2/terraform_0.13.2_linux_amd64.zip" -o "terraform.zip" \
     && unzip ./terraform.zip \
     && chmod +x terraform \
     && mv ./terraform /usr/local/bin \
@@ -117,7 +117,7 @@ RUN curl --silent "https://releases.hashicorp.com/terraform/0.12.25/terraform_0.
     && terraform version
 
 # Install HashiCorp Packer
-RUN curl --silent "https://releases.hashicorp.com/packer/1.5.6/packer_1.5.6_linux_amd64.zip" -o "packer.zip" \
+RUN curl --silent "https://releases.hashicorp.com/packer/1.6.2/packer_1.6.2_linux_amd64.zip" -o "packer.zip" \
     && unzip ./packer.zip \
     && chmod +x packer \
     && mv ./packer /usr/local/bin \
@@ -131,7 +131,7 @@ RUN curl --silent -LO https://github.com/kubernetes/kops/releases/download/v1.16
     && mv ./kops-linux-amd64 /usr/local/bin/kops
 
 # Install Helm CLI
-RUN wget -q -O helm.tar.gz https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz \
+RUN wget -q -O helm.tar.gz https://get.helm.sh/helm-v3.3.1-linux-amd64.tar.gz \
     && tar xvf helm.tar.gz \
     && rm ./helm.tar.gz \
     && mv linux-amd64/helm /usr/local/bin \

@@ -8,13 +8,14 @@ This is a Linux container image that supplies a set of software tools that enabl
 
 ## Components Included
 
-- [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
-- [AWS eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
-- [AWS IAM Authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
-- [Kubernetes kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux)
-- [Terraform CLI](https://www.terraform.io/docs/cli-index.html)
-- [Kubernetes Operations (kops)](https://github.com/kubernetes/kops)
-- [Helm CLI](https://helm.sh/docs/intro/)
+- [AWS CLI v2 v2.0.19](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
+- [AWS eksctl 0.20.0](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
+- [AWS IAM Authenticator v1.17.9](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
+- [Kubernetes kubectl v 1.18.3](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux)
+- [Hashicorp Terraform CLI v0.13.2](https://www.terraform.io/docs/cli-index.html)
+- [Hashicorp Packer CLI v1.6.2](https://www.packer.io/)
+- [Kubernetes Operations (kops) 1.16.1](https://github.com/kubernetes/kops)
+- [Helm CLI v3.3.1](https://helm.sh/docs/intro/)
 - Python38
 - git
 - jq
