@@ -5,7 +5,8 @@ export DOCKERFILE_NAME=Dockerfile
 
 export IMAGE_SOURCECODE_GIT_REPO_URL=localhost
 export IMAGE_SOURCECODE_GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-export IMAGE_SOURCECODE_GIT_COMMIT_HASH=$(git log -1 --pretty=%h)
+export IMAGE_SOURCECODE_GIT_COMMIT_HASH=$(git log -1 --pretty=%H)
+export IMAGE_SOURCECODE_GIT_COMMIT_SHORTHASH=$(git log -1 --pretty=%h)
 export IMAGE_SOURCECODE_GIT_COMMIT_TAG=$(git show-ref --tags -d | grep ^${IMAGE_SOURCECODE_GIT_COMMIT_HASH} | sed -e 's,.* refs/tags/,,' -e 's/\^{}//')
 export IMAGE_SOURCECODE_GIT_COMMITTER_NAME=$(git log -1 --pretty=%cn)
 export IMAGE_SOURCECODE_GIT_COMMITTER_DATE=$(git log -1 --pretty=%ci)
