@@ -183,7 +183,6 @@ LABEL \
 
 COPY README.* entrypoint.sh image-info .bashrc "/"
 RUN chmod 755 /entrypoint.sh
-#RUN mkdir -p /data && chmod 755 /data && chown ${USERNAME} /data
 
 VOLUME ["/home/${USERNAME}"]
 WORKDIR "/home/${USERNAME}"
